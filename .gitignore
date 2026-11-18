@@ -1,0 +1,17 @@
+# Virtual Environment
+.venv/
+venv/
+env/
+.env
+
+# Python compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Temporary uploads folder (jo hum ne Flask ke liye banaya hai)
+temp_uploads/
+
+# OS generated files
+.DS_Store
+Thumbs.db

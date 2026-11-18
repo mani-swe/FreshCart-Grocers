@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FreshCart Grocers</title>
+    <style>
+      :root {
+        --primary: #2d6a4f;
+        --secondary: #52b788;
+        --light: #f4f9f4;
+        --dark: #1b4332;
+        --error: #d90429;
+      }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--light);
+        color: var(--dark);
+        margin: 0;
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+      }
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        width: 100%;
+        max-width: 600px;
+      }
+      h2 {
+        color: var(--primary);
+        margin-top: 0;
+      }
+      p {
+        color: #666;
+        font-size: 14px;
+      }
+      .upload-box {
+        border: 2px dashed var(--secondary);
+        padding: 25px;
+        text-align: center;
+        border-radius: 8px;
+        background: #fafdfa;
+        margin: 20px 0;
+      }
+      input[type="file"] {
+        margin: 10px 0;
+      }
+      button {
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: 600;
+        width: 100%;
+        transition: background 0.2s;
+      }
+      button:hover {
+        background-color: var(--dark);
+      }
+      .result-box {
+        margin-top: 25px;
+        padding: 15px;
+        border-radius: 6px;
+        display: none;
+      }
+      .success {
+        background: #e8f5e9;
+        border-left: 5px solid var(--secondary);
+        color: #1b5e20;
+      }
+      .error {
+        background: #ffebee;
+        border-left: 5px solid var(--error);
+        color: #b71c1c;
+      }
+      pre {
+        background: #263238;
+        color: #eceff1;
+        padding: 12px;
+        border-radius: 6px;
+        overflow-x: auto;
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>🥬 FreshCart Grocers</h2>
+      <p>
+        Upload your organic store meeting transcript (.txt), daily report
+        (.json), or inventory log (.csv) to validate and generate the AI prompt.
+      </p>
+
+      <form id="uploadForm">
+        <div class="upload-box">
+          <input
+            type="file"
+            id="fileInput"
+            name="file"
+            accept=".txt,.md,.json,.csv"
+            required
+          />
+          <p>Supported formats: .txt, .md, .json, .csv</p>
+        </div>
+        <button type="submit">Process & Validate File</button>
+      </form>
+
+      <div id="resultContainer" class="result-box">
+        <h3 id="resultTitle"></h3>
+        <p id="resultMsg"></p>
+        <div id="promptSection" style="display: none">
+          <h4>Generated AI Prompt:</h4>
+          <pre id="promptText"></pre>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document
+        .getElementById("uploadForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const fileInput = document.getElementById("fileInput");
+          const resultContainer = document.getElementById("resultContainer");
+          const resultTitle = document.getElementById("resultTitle");
+          const resultMsg = document.getElementById("resultMsg");
+          const promptSection = document.getElementById("promptSection");
+          const promptText = document.getElementById("promptText");
+
+          if (fileInput.files.length === 0) return;
+
+          const formData = new FormData();
+          formData.append("file", fileInput.files[0]);
+
+          resultContainer.style.display = "block";
+          resultContainer.className = "result-box";
+          resultTitle.innerText = "Processing...";
+          resultMsg.innerText =
+            "Checking file format and validating content...";
+          promptSection.style.display = "none";
+
+          try {
+            const response = await fetch("/upload", {
+              method: "POST",
+              body: formData,
+            });
+
+            const data = await response.json();
+
+            if (data.status === "success") {
+              resultContainer.className = "result-box success";
+              resultTitle.innerText = "✅ Validation Successful!";
+              resultMsg.innerHTML = `<strong>File:</strong> ${data.source_file}<br><strong>Type:</strong> ${data.doc_type}`;
+              promptText.innerText = data.generated_user_prompt;
+              promptSection.style.display = "block";
+            } else {
+              resultContainer.className = "result-box error";
+              resultTitle.innerText = "❌ Validation Failed";
+              resultMsg.innerText = data.message;
+            }
+          } catch (error) {
+            resultContainer.className = "result-box error";
+            resultTitle.innerText = "Error";
+            resultMsg.innerText = "Failed to communicate with the server.";
+          }
+        });
+    </script>
+  </body>
+</html>
