@@ -12,22 +12,23 @@ Make sure you have Python 3.x installed on your system.
    
    - Run the test suite script:
 
-```Bash
-python src/main.py
-```
+      ```Bash
+      python src/main.py
+      ```
 
    - Or if you want to run flask application:
 
       1. Install dependencies in your terminal:
 
-```Bash
-pip install -r requirements.txt
-``` 
+         ```Bash
+         pip install -r requirements.txt
+         ``` 
+
       2. Now run flask application by:
 
-```Bash
-python app.py
-``` 
+         ```Bash
+         python app.py
+         ``` 
 
       3. Now open this link in your browser: http://127.0.0.1:5000
 
@@ -63,5 +64,6 @@ python app.py
 │   └── index.html          # Frontend user interface
 ├── app.py                  # Flask Application that gives GUI to project
 ├── README.md               # Project documentation
+├── requirements.txt        # Project dependencies
 └── .gitignore              # Git ignore rules
 ```
