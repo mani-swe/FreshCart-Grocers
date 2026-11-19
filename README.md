@@ -1,4 +1,4 @@
-# FreshCart Grocers - Meeting & Report Summariser (Task 1: Input Formats)
+# 🥬 FreshCart Grocers - Meeting & Report Summariser
 
 Welcome to the **FreshCart Grocers** AI project repository. FreshCart is a thriving organic grocery store chain committed to sustainable produce, zero food waste, and efficient store operations. To streamline daily management, this project builds an automated meeting and report summariser step-by-step—taking raw transcripts, daily logs, and store reports and turning them into concise, actionable summaries.
 
@@ -82,7 +82,7 @@ Up to this stage (**Task 3: Quality Checklist**), the **FreshCart Grocers** proj
    - **Summary Prompt Preparation (`src/summariser.py`):** Builds on validated inputs to generate the FreshCart system persona and structured prompt instructions covering executive overview, action items with owners, inventory/spoilage alerts, and financial highlights.
 
    - **Quality Checklist Evaluation (`config/quality_checklist.json` & `src/checklist_validator.py`):** Evaluates organic produce inspection records across `QC_01_CONDITION`, `QC_02_COLD_CHAIN` (`34.0°F`–`38.0°F`), `QC_03_SHELF_LIFE`, `QC_04_PACKAGING_LABEL`, and `QC_05_QUANTITY_WEIGHT`, returning `ACCEPT_DELIVERY`, `HOLD_OR_REJECT_BATCH`, or `REVIEW_OR_DISCOUNT` along with failure actions and safe error messages on bad inputs.
-   
+
    - **CLI Test Runners & Optional Web Interface (`src/main.py`, `src/run_qc_tests.py`, `app.py`):** Lets you verify all checks from the terminal or upload files through the Flask web interface (`templates/index.html`)
 
 ---
