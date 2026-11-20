@@ -1,6 +1,7 @@
 import os
 import sys
 import uuid
+import tempfile
 from flask import Flask, render_template, request, jsonify
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -14,7 +15,7 @@ from src.batch_processor import FreshCartBatchProcessor
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = os.path.join(BASE_DIR, "temp_uploads")
+UPLOAD_FOLDER = os.path.join(tempfile.gettempdir(), "freshcart_uploads")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 CHECKLIST_PATH = os.path.join(BASE_DIR, "config", "quality_checklist.json")
