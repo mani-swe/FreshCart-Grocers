@@ -1,0 +1,13 @@
+{
+  "delivery_id": "FC-DEL-2026-1119-01",
+  "supplier_name": "GreenValley Organic Farms",
+  "produce_item": "Organic Baby Spinach",
+  "delivery_date": "2026-11-19",
+  "responses": {
+    "QC_01_CONDITION": "fresh_firm",
+    "QC_02_COLD_CHAIN": 35.5,
+    "QC_03_SHELF_LIFE": 5,
+    "QC_04_PACKAGING_LABEL": true,
+    "QC_05_QUANTITY_WEIGHT": 2.0
+  }
+}

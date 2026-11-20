@@ -1,0 +1,64 @@
+{
+  "store_name": "FreshCart Grocers",
+  "checklist_version": "1.0",
+  "applies_to": "organic_produce_delivery",
+  "checks": [
+    {
+      "id": "QC_01_CONDITION",
+      "name": "Produce Visual & Texture Condition",
+      "category": "condition",
+      "severity": "high",
+      "input_type": "enum",
+      "allowed_values": [
+        "fresh_firm",
+        "minor_wear",
+        "bruised_soft",
+        "mold_rot"
+      ],
+      "pass_values": ["fresh_firm", "minor_wear"],
+      "pass_rule": "Produce is fresh and firm with no mold, rot, or heavy bruising.",
+      "on_fail": "Quarantine affected crates immediately, log spoilage, and raise supplier credit or rejection if batch damage is widespread."
+    },
+    {
+      "id": "QC_02_COLD_CHAIN",
+      "name": "Cold Chain Storage Temperature",
+      "category": "temperature",
+      "severity": "critical",
+      "input_type": "number_range_f",
+      "min_temp_f": 34.0,
+      "max_temp_f": 38.0,
+      "pass_rule": "Chilled produce temperature is between 34.0°F and 38.0°F (1.1°C to 3.3°C).",
+      "on_fail": "Flag temperature breach, place batch on hold, and notify store manager before releasing to shelves or cooler."
+    },
+    {
+      "id": "QC_03_SHELF_LIFE",
+      "name": "Remaining Shelf-Life & Freshness Window",
+      "category": "expiry",
+      "severity": "high",
+      "input_type": "min_days",
+      "min_remaining_days": 3,
+      "pass_rule": "At least 3 days of usable freshness/shelf life remain from delivery date.",
+      "on_fail": "If 1-2 days remain on sound stock, mark for fast-sale/discount; if expired or spoiled, reject and log waste."
+    },
+    {
+      "id": "QC_04_PACKAGING_LABEL",
+      "name": "Packaging Integrity & Organic Lot Labeling",
+      "category": "packaging",
+      "severity": "critical",
+      "input_type": "boolean",
+      "required_value": true,
+      "pass_rule": "Crates/seals are intact without leaks/contamination, and organic origin/lot labels are present.",
+      "on_fail": "Hold unlabelled or damaged-seal crates and request organic certification/lot verification from the supplier."
+    },
+    {
+      "id": "QC_05_QUANTITY_WEIGHT",
+      "name": "Delivered Quantity vs. Order Tolerance",
+      "category": "quantity",
+      "severity": "medium",
+      "input_type": "tolerance_pct",
+      "max_variance_pct": 5.0,
+      "pass_rule": "Actual delivered weight or count is within +/-5.0% of the approved purchase order.",
+      "on_fail": "Record quantity variance on receiving slip and log supplier short-delivery or over-delivery adjustment."
+    }
+  ]
+}

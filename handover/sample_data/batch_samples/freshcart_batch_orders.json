@@ -1,0 +1,42 @@
+[
+  {
+    "batch_item_id": "BATCH-001",
+    "record_type": "produce_order",
+    "supplier_or_source": "GreenValley Organic Farms",
+    "item_or_topic": "Organic kale",
+    "quantity": 12,
+    "unit": "bunches",
+    "delivery_day": "Thursday",
+    "notes": "Thursday delivery; inspect leaf crispness upon arrival."
+  },
+  {
+    "batch_item_id": "BATCH-002",
+    "record_type": "meeting_note",
+    "supplier_or_source": "Thursday Stock & Produce Sync",
+    "item_or_topic": "Free-range organic eggs and avocado promo",
+    "quantity": 80,
+    "unit": "cartons",
+    "delivery_day": "Friday",
+    "notes": "Confirmed 80 cartons of free-range organic eggs; plan weekend display."
+  },
+  {
+    "batch_item_id": "BATCH-003",
+    "record_type": "produce_order",
+    "supplier_or_source": "SunRidge Organic Orchards",
+    "item_or_topic": "Organic Gala apples",
+    "quantity": -5,
+    "unit": "lbs",
+    "delivery_day": "Thursday",
+    "notes": "Negative quantity test row to verify bad input handling."
+  },
+  {
+    "batch_item_id": "BATCH-004",
+    "record_type": "produce_order",
+    "supplier_or_source": "",
+    "item_or_topic": "",
+    "quantity": 15,
+    "unit": "lbs",
+    "delivery_day": "Saturday",
+    "notes": "Missing item and supplier details."
+  }
+]

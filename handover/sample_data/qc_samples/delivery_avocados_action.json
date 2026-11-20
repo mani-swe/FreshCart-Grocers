@@ -1,0 +1,13 @@
+{
+  "delivery_id": "FC-DEL-2026-1119-02",
+  "supplier_name": "SunRidge Organic Orchards",
+  "produce_item": "Organic Hass Avocados",
+  "delivery_date": "2026-11-19",
+  "responses": {
+    "QC_01_CONDITION": "minor_wear",
+    "QC_02_COLD_CHAIN": 40.5,
+    "QC_03_SHELF_LIFE": 2,
+    "QC_04_PACKAGING_LABEL": true,
+    "QC_05_QUANTITY_WEIGHT": -1.5
+  }
+}

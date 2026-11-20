@@ -1,6 +1,6 @@
 import json
 import os
-from summariser import FreshCartSummariser
+from .summariser import FreshCartSummariser
 
 
 class FreshCartBatchProcessor:
