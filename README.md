@@ -123,6 +123,12 @@ python handover/src/run_handover.py
 
 This runs all four pipeline stages sequentially against `handover/sample_data/` and prints pass/fail and error-handling diagnostics in the terminal.
 
+### Option C: Live App Demo on Vercel
+
+The **FreshCart Grocers** web application is deployed and live on Vercel:
+
+- **Live URL:** [https://freshcart-grocers.vercel.app](https://freshcart-grocers.vercel.app)
+
 ---
 
 ## 📋 Handover Summary
@@ -140,7 +146,6 @@ FreshCart-Grocers/
 ├── app.py                             # Main Flask web server & 4-mode upload router
 ├── README.md                          # Project documentation & handover guide
 ├── requirements.txt                   # Python dependencies (Flask, etc.)
-├── temp_uploads/                      # Temporary staging folder for uploaded files
 ├── templates/   
 │   └── index.html                     # 4-mode interactive web UI
 ├── config/  
