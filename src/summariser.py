@@ -1,5 +1,5 @@
 import os
-from .validator import FreshCartInputValidator
+from validator import FreshCartInputValidator
 
 class FreshCartSummariser:
     """

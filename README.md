@@ -73,17 +73,45 @@ Quality rules are kept in `config/quality_checklist.json` rather than hardcoded 
 
 ---
 
+## 📦 How Batch Processing Works & Validation Criteria
+
+`FreshCartBatchProcessor` (`src/batch_processor.py`) reads a batch of FreshCart Grocers orders and meeting notes (such as `sample_data/batch_samples/freshcart_batch_orders.json`) and processes items one by one without stopping the batch when an individual row is bad or a file is empty.
+
+   ### How It Runs
+
+   1. **File-Level Safety Check:** Verifies that the batch file exists, uses `.json`, is not empty, parses as valid JSON, and contains a non-empty list of records. If not, it returns a clear error message without crashing.
+
+   2. **Per-Record Validation & Isolation:** Each item in the list is checked separately. Bad rows are logged under `failed_items` with a clear reason while valid rows continue into `processed_items`.
+
+   3. **Duplicate ID Protection:** Tracks `batch_item_id` values already seen in the run and marks repeats as `skipped_duplicate` so duplicate entries do not waste processing or model cost.
+
+   4. **Batch Summary Output:** Returns total counts (`total_records`, `processed_count`, `failed_count`, `skipped_duplicate_count`) along with processed summaries, failure reasons, and skipped duplicates.
+
+   ### Criteria Used to Validate Batch Items
+
+   - **Record Structure & Type (`record_type`):** Each entry must be a JSON object with `record_type` set to `produce_order` or `meeting_note`.
+
+   - **Supplier / Source & Item / Topic (`supplier_or_source`, `item_or_topic`):** Both fields must be non-empty text (for example, `GreenValley Organic Farms` and `Organic kale`).
+
+   - **Positive Quantity (`quantity`):** Must be a valid number greater than `0` (not text, boolean, zero, or a negative value like `-5`).
+
+   - **Unit & Delivery Timing (`unit`, `delivery_day`):** Both fields must be non-empty (for example, `12` `bunches` on `Thursday`).
+
+   - **Unique Batch ID (`batch_item_id`):** Repeated IDs within the batch are skipped as duplicates instead of being re-processed.
+
+---
+
 ## ❓ What to Expect?:
 
-Up to this stage (**Task 3: Quality Checklist**), the **FreshCart Grocers** project covers input validation, structured summary prompt preparation, and data-driven organic produce quality checks:
+Up to this stage, the **FreshCart Grocers** project covers input validation, structured summary prompt building, organic produce quality checks, and safe batch record processing:
 
-   - **Input Validation & Standardisation (`src/validator.py`):** Accepts `.txt`, `.md`, `.json`, and `.csv` store files with realistic organic grocery data (such as `weekly_stock_meeting.txt`, `daily_store_report.json`, and `spoilage_log.csv`), normalises valid content, and returns clear error messages instead of crashing on empty, short, missing-field, or unsupported files.
+   - **Input Validation & Standardisation (`src/validator.py`):** Validates `.txt`, `.md`, `.json`, and `.csv` store files with realistic organic grocery sample data, normalises valid inputs, and returns clear error messages on empty, short, missing-field, or unsupported files without crashing.
 
-   - **Summary Prompt Preparation (`src/summariser.py`):** Builds on validated inputs to generate the FreshCart system persona and structured prompt instructions covering executive overview, action items with owners, inventory/spoilage alerts, and financial highlights.
+   - **Summary Prompt Preparation (`src/summariser.py`):** Builds on validated inputs to generate the FreshCart system persona and structured prompt template covering executive overview, action items with owners, inventory/spoilage alerts, and financial highlights.
 
-   - **Quality Checklist Evaluation (`config/quality_checklist.json` & `src/checklist_validator.py`):** Evaluates organic produce inspection records across `QC_01_CONDITION`, `QC_02_COLD_CHAIN` (`34.0°F`–`38.0°F`), `QC_03_SHELF_LIFE`, `QC_04_PACKAGING_LABEL`, and `QC_05_QUANTITY_WEIGHT`, returning `ACCEPT_DELIVERY`, `HOLD_OR_REJECT_BATCH`, or `REVIEW_OR_DISCOUNT` along with failure actions and safe error messages on bad inputs.
+   - **Quality Checklist Evaluation (`config/quality_checklist.json` & `src/checklist_validator.py`):** Evaluates organic produce inspection records across `QC_01_CONDITION`, `QC_02_COLD_CHAIN` (`34.0°F`–`38.0°F`), `QC_03_SHELF_LIFE`, `QC_04_PACKAGING_LABEL`, and `QC_05_QUANTITY_WEIGHT`, returning `ACCEPT_DELIVERY`, `HOLD_OR_REJECT_BATCH`, or `REVIEW_OR_DISCOUNT` with failure actions and safe error handling.
 
-   - **CLI Test Runners & Optional Web Interface (`src/main.py`, `src/run_qc_tests.py`, `app.py`):** Lets you verify all checks from the terminal or upload files through the Flask web interface (`templates/index.html`)
+   - **Batch Processing & Error Isolation (`src/batch_processor.py` & `src/run_batch_tests.py`):** Processes batches of grocery orders and meeting notes, isolates invalid rows (`BATCH-003` and `BATCH-004`) and empty batch files (`empty_batch.json`) with clear messages, and skips duplicate IDs.
 
 ---
 
@@ -93,12 +121,15 @@ Up to this stage (**Task 3: Quality Checklist**), the **FreshCart Grocers** proj
 .
 ├── src/
 │   ├── __init__.py
-│   ├── checklist_validator.py         # Task 3: Quality checklist rule evaluator
+│   ├── run_batch_tests.py             # Batch processing test runner
+│   ├── checklist_validator.py         # Quality checklist rule evaluator
 │   ├── validator.py                   # Input validation & standardization logic
-│   ├── summariser.py                  # Extraact useful information from file and generate clean prompt for AI model 
-│   ├── run_qc_tests.py                # Task 3: Quality checklist test runner
+│   ├── summariser.py                  # Extraact useful information from file and generate clean prompt for AI model
+│   ├── batch_processor.py             # Safe batch record & duplicate processor
+│   ├── run_qc_tests.py                # Quality checklist test runner
 │   └── main.py                        # Test suite script
 ├── sample_data/
+│   ├── batch_samples/                 # Batch order/meeting records & empty batch test
 │   ├── invalid/                       # Intentional test files for error handling
 │   ├── qc_samples/                    # Organic produce inspection test records
 │   └── valid/                         # Realistic organic store sample files
